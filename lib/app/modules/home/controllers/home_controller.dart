@@ -1,31 +1,40 @@
-import 'dart:developer';
-
 import 'package:cloudbase_auth/cloudbase_auth.dart';
 import 'package:cloudbase_core/cloudbase_core.dart';
 import 'package:get/get.dart';
 import 'package:tcb_demo/utils/cloudbase/cloudbase.dart';
+import 'package:tcb_demo/config.dart';
 
 class HomeController extends GetxController {
   CloudBaseUtil _cloudBaseUtil = CloudBaseUtil();
   //TODO: Implement HomeController
 
+  final loading = false.obs;
   final authState = CloudBaseAuthState().obs;
   final userInfo = CloudBaseUserInfo({}).obs;
 
   Future<void> login() async {
     print('login');
-    _cloudBaseUtil.auth.signInAnonymously().then((success) async {
-      CloudBaseResponse res = await _cloudBaseUtil.callFunction("auth", {
-        "username": "",
-        "password": "",
-      });
-      var ticket = res.data['ticket'];
-      await _cloudBaseUtil.auth.signInWithTicket(ticket).then((success) {
-        updateAuth();
-      }).catchError((err) {
-        // 登录失败
-      });
-    }).catchError((err) {});
+    loading.value = true;
+    _cloudBaseUtil.auth
+        .signInAnonymously()
+        .then((success) async {
+          CloudBaseResponse res = await _cloudBaseUtil.callFunction("auth", {
+            "username": CloudConfig.tmpUsername,
+            "password": CloudConfig.tmpPassword,
+          });
+          var ticket = res.data['ticket'];
+          await _cloudBaseUtil.auth.signInWithTicket(ticket).then((success) {
+            updateAuth();
+          }).catchError((err) {
+            // 登录失败
+          }).whenComplete(() {
+            loading.value = false;
+          });
+        })
+        .catchError((err) {})
+        .whenComplete(() {
+          loading.value = false;
+        });
   }
 
   logout() async {

@@ -7,10 +7,6 @@ import '../controllers/home_controller.dart';
 class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
-    print('++++');
-    print(controller.authState.value);
-    print('++++');
-
     return Scaffold(
       appBar: AppBar(
         title:
@@ -20,13 +16,19 @@ class HomeView extends GetView<HomeController> {
       body: Center(
         child: Column(
           children: [
+            Obx(() => controller.loading.value
+                ? CircularProgressIndicator()
+                : SizedBox.shrink()),
             ElevatedButton(
-              child: Text("login"),
+              child: Obx(() => Text(
+                  controller.authState.value != null ? 'logout' : 'login')),
               onPressed: () {
-                if (controller.authState.value != null) {
-                  controller.logout();
-                } else {
-                  controller.login();
+                if (!controller.loading.value) {
+                  if (controller.authState.value != null) {
+                    controller.logout();
+                  } else {
+                    controller.login();
+                  }
                 }
               },
             ),

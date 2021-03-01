@@ -9,6 +9,9 @@ class CloudConfig {
   static String tcbIOSAccessKeyVersion;
   static String tcbEnv;
 
+  static String tmpUsername;
+  static String tmpPassword;
+
   static Future<void> init() async {
     final String configString = await rootBundle.loadString("app_config.json");
     Map<String, dynamic> mapConfig = json.decode(configString);
@@ -18,5 +21,8 @@ class CloudConfig {
     tcbEnv = mapConfig["tcbEnv"] as String;
     tcbIOSAccessKey = mapConfig["tcbIOSAccessKey"] as String;
     tcbIOSAccessKeyVersion = mapConfig["tcbIOSAccessKeyVersion"] as String;
+
+    tmpUsername = mapConfig["tmp_username"] as String;
+    tmpPassword = mapConfig["tmp_password"] as String;
   }
 }

@@ -1,6 +1,8 @@
-// 云接口相关配置
 import 'dart:convert';
+
 import 'package:flutter/services.dart';
+
+// 云接口相关配置
 
 class CloudConfig {
   static String tcbAndroidAccessKey;

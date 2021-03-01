@@ -1,8 +1,9 @@
 import 'package:cloudbase_auth/cloudbase_auth.dart';
 import 'package:cloudbase_core/cloudbase_core.dart';
 import 'package:get/get.dart';
-import 'package:tcb_demo/utils/cloudbase/cloudbase.dart';
+
 import 'package:tcb_demo/config.dart';
+import 'package:tcb_demo/utils/cloudbase/cloudbase.dart';
 
 class HomeController extends GetxController {
   CloudBaseUtil _cloudBaseUtil = CloudBaseUtil();

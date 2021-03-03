@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
 // 云接口相关配置
 
@@ -15,16 +13,15 @@ class CloudConfig {
   static String tmpPassword;
 
   static Future<void> init() async {
-    final String configString = await rootBundle.loadString("app_config.json");
-    Map<String, dynamic> mapConfig = json.decode(configString);
-    tcbAndroidAccessKeyVersion =
-        mapConfig["tcbAndroidAccessKeyVersion"] as String;
-    tcbAndroidAccessKey = mapConfig["tcbAndroidAccessKey"] as String;
-    tcbEnv = mapConfig["tcbEnv"] as String;
-    tcbIOSAccessKey = mapConfig["tcbIOSAccessKey"] as String;
-    tcbIOSAccessKeyVersion = mapConfig["tcbIOSAccessKeyVersion"] as String;
+    await DotEnv.load(fileName: ".env");
+    print(DotEnv.env);
+    tcbAndroidAccessKeyVersion = DotEnv.env["tcbAndroidAccessKeyVersion"];
+    tcbAndroidAccessKey = DotEnv.env["tcbAndroidAccessKey"];
+    tcbEnv = DotEnv.env["tcbEnv"];
+    tcbIOSAccessKey = DotEnv.env["tcbIOSAccessKey"];
+    tcbIOSAccessKeyVersion = DotEnv.env["tcbIOSAccessKeyVersion"];
 
-    tmpUsername = mapConfig["tmp_username"] as String;
-    tmpPassword = mapConfig["tmp_password"] as String;
+    tmpUsername = DotEnv.env["tmp_username"];
+    tmpPassword = DotEnv.env["tmp_password"];
   }
 }
